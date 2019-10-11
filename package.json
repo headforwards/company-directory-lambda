@@ -34,7 +34,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.1",
     "reactstrap": "^8.0.0",
-    "typescript": "^3.6.4"
+    "typescript": "~3.5.2"
   },
   "scripts": {
     "start": "run-p start:**",
