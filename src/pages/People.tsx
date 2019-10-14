@@ -26,7 +26,7 @@ const People: React.SFC<PeopleProps> = ({ accessToken }) => {
 
     // useEffect(() => {
     const apolloClient = new ApolloClient({
-        uri: 'http://localhost:9000',
+        uri: '/.netlify/functions/graphql',
         request: (operation) => {
             operation.setContext({
                 headers: {
