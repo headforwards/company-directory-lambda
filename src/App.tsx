@@ -10,6 +10,8 @@ import Calendar from './pages/Calendar'
 import People from './pages/People'
 import ErrorMessage, { ErrorMessageProps } from './components/ErrorMessage';
 import 'bootstrap/dist/css/bootstrap.css';
+import ApolloClient from 'apollo-boost'
+
 
 const App: React.SFC = () => {
 
@@ -24,10 +26,13 @@ const App: React.SFC = () => {
   });
 
   let signedInUser = userAgentApplication.getAccount();
+  let graphApiAccessToken: string
+  // let apolloClient: ApolloClient<any>
 
   const [isAuthenticated, setAuthenticated] = useState(signedInUser !== null)
   const [user, setUser] = useState({})
   const [error, setError] = useState<ErrorMessageProps | null>(null)
+  const [accessToken, setAccessToken] = useState<string | null>(null)
 
   let errorMessage = null;
   if (error) {
@@ -41,7 +46,9 @@ const App: React.SFC = () => {
           scopes: config.scopes,
           prompt: "select_account"
         });
-      await getUserProfile();
+      await getUserProfile()
+      // apolloClient = await getApolloClient(graphApiAccessToken)
+      
     }
     catch (err) {
       var errParts = err.toString().split('|');
@@ -62,20 +69,25 @@ const App: React.SFC = () => {
       // will just return the cached token. Otherwise, it will
       // make a request to the Azure OAuth endpoint to get a token
 
-      var accessToken = await userAgentApplication.acquireTokenSilent({
+      var token = await userAgentApplication.acquireTokenSilent({
         scopes: config.scopes
       });
 
-      if (accessToken) {
-        // TEMPORARY: Display the token in the error flash
-        const user = await getUserDetails(accessToken)
-        console.log(accessToken)
+      console.log('Access Token: ')
+      console.log(token.accessToken)
+
+
+      if (token) {
+        const user = await getUserDetails(token)
         setAuthenticated(true)
         setUser({
           displayName: user.displayName,
           email: user.email || user.userPrincipalName
         })
         setError(null)
+        // graphApiAccessToken = token.accessToken
+        console.log(`AccessToken from thingy: ${graphApiAccessToken}`)
+        setAccessToken(token.accessToken)
       }
     }
     catch (err) {
@@ -98,6 +110,19 @@ const App: React.SFC = () => {
     }
   }
 
+  // async function getApolloClient(accessToken: string) {
+  //   return new ApolloClient({
+  //     uri: 'http://localhost:4000',
+  //     request: (operation) => {
+  //       operation.setContext({
+  //         headers: {
+  //           authorization: accessToken ? accessToken : ''
+  //         }
+  //       })
+  //     }
+  //   })
+  // }
+
   return (
     <Router>
       <div>
@@ -117,16 +142,21 @@ const App: React.SFC = () => {
             } />
           <Route exact path="/calendar"
             render={(props) =>
-              <Calendar 
-                />
+              <Calendar
+              />
             }
           />
+          {isAuthenticated ? (
           <Route exact path="/people"
             render={(props) =>
-              <People 
-                />
+              <People accessToken={accessToken}
+              />
             }
           />
+          ) : ( 
+            <div>Go Away</div>
+          )
+          }
         </Container>
       </div>
     </Router>
