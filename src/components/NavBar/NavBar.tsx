@@ -49,7 +49,7 @@ const NavBar: React.SFC<NavBarProps> = ({ isAuthenticated, user, authButtonMetho
     <div>
       <Navbar color="dark" dark expand="md" fixed="top">
         <Container>
-          <NavbarBrand href="/">React Graph Tutorial</NavbarBrand>
+          {/* <NavbarBrand>React Graph Tutorial</NavbarBrand> */}
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>

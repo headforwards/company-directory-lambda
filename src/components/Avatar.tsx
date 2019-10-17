@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getPhotoForUser } from '../GraphService'
+import { getPhotoForUser } from '../MSGraphService'
 import UserAvatar from './NavBar/UserAvatar'
 
 

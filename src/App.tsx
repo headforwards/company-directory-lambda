@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import config from './Config'
 import { UserAgentApplication } from 'msal'
-import { getUserDetails } from './GraphService'
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container } from 'reactstrap';
-import NavBar from './components/NavBar/NavBar';
-import Welcome from './pages/Welcome';
-import Calendar from './pages/Calendar'
-import People from './pages/People'
+import { getUserDetails } from './MSGraphService'
+import Routing from './components/Routing'
 import ErrorMessage, { ErrorMessageProps } from './components/ErrorMessage';
-import 'bootstrap/dist/css/bootstrap.css';
+import getAccessToken from './utils/authutils'
+// import { ApolloClient } from 'apollo-client'
+// import { createHttpLink } from 'apollo-link-http'
+// import { setContext } from 'apollo-link-context'
+// import {InMemoryCache} from 'apollo-cache-inmemory'
+
 import ApolloClient from 'apollo-boost'
+
+import { ApolloProvider } from '@apollo/react-hooks';
+
 
 
 const App: React.SFC = () => {
@@ -25,14 +28,25 @@ const App: React.SFC = () => {
     }
   });
 
+  // let apolloClientNoAuth: ApolloClient<any> = new ApolloClient({
+  //   uri: '/.netlify/functions/graphql',
+  //   request: (operation) => {
+  //     const token = 'SOMESTRING' // localStorage.getItem('token')
+  //     operation.setContext({
+  //       headers: {
+  //         authorization: token ? token : ''
+  //       }
+  //     })
+  //   }
+  // })
+
   let signedInUser = userAgentApplication.getAccount();
-  let graphApiAccessToken: string
-  // let apolloClient: ApolloClient<any>
 
   const [isAuthenticated, setAuthenticated] = useState(signedInUser !== null)
   const [user, setUser] = useState({})
   const [error, setError] = useState<ErrorMessageProps | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [apolloClient, setApolloClient] = useState<ApolloClient<any>>()
 
   let errorMessage = null;
   if (error) {
@@ -47,10 +61,7 @@ const App: React.SFC = () => {
           prompt: "select_account"
         });
       await getUserProfile()
-      // apolloClient = await getApolloClient(graphApiAccessToken)
-      
-    }
-    catch (err) {
+    } catch (err) {
       var errParts = err.toString().split('|');
       setAuthenticated(false)
       setError({ message: errParts[1], debugProp: errParts[0] })
@@ -62,6 +73,11 @@ const App: React.SFC = () => {
     userAgentApplication.logout()
   }
 
+  async function getAToken() {
+    return userAgentApplication.acquireTokenSilent({
+      scopes: config.scopes
+    });
+  }
   async function getUserProfile() {
     try {
       // Get the access token silently
@@ -69,15 +85,11 @@ const App: React.SFC = () => {
       // will just return the cached token. Otherwise, it will
       // make a request to the Azure OAuth endpoint to get a token
 
-      var token = await userAgentApplication.acquireTokenSilent({
-        scopes: config.scopes
-      });
-
-      console.log('Access Token: ')
-      console.log(token.accessToken)
-
+      let token = await getAToken()
 
       if (token) {
+        console.log(`Token: `)
+        console.log(token)
         const user = await getUserDetails(token)
         setAuthenticated(true)
         setUser({
@@ -85,9 +97,22 @@ const App: React.SFC = () => {
           email: user.email || user.userPrincipalName
         })
         setError(null)
-        // graphApiAccessToken = token.accessToken
-        console.log(`AccessToken from thingy: ${graphApiAccessToken}`)
         setAccessToken(token.accessToken)
+        const apolloClientWithAuth = new ApolloClient({
+          uri: '/.netlify/functions/graphql',
+          request: (operation) => {
+
+            operation.setContext({
+              headers: {
+                authorization: token ? token.accessToken : ''
+              }
+            })
+          }
+        })
+        setApolloClient(apolloClientWithAuth)
+
+        //TODO Create a new ApolloClient with the accessToken and set update the provider
+
       }
     }
     catch (err) {
@@ -110,62 +135,40 @@ const App: React.SFC = () => {
     }
   }
 
-  // async function getApolloClient(accessToken: string) {
-  //   return new ApolloClient({
-  //     uri: 'http://localhost:4000',
-  //     request: (operation) => {
-  //       operation.setContext({
-  //         headers: {
-  //           authorization: accessToken ? accessToken : ''
-  //         }
-  //       })
-  //     }
-  //   })
-  // }
 
   return (
-    <Router>
-      <div>
-        <NavBar
-          isAuthenticated={isAuthenticated}
-          authButtonMethod={isAuthenticated ? logout : login}
-          user={user} />
-        <Container>
-          {errorMessage}
-          <Route exact path="/"
-            render={(props) =>
-              <Welcome {...props}
-                isAuthenticated={isAuthenticated}
-                user={user}
-                authButtonMethod={login}
-              />
-            } />
-          <Route exact path="/calendar"
-            render={(props) =>
-              <Calendar
-              />
-            }
+    <>
+      {isAuthenticated && !!apolloClient ? (
+        <ApolloProvider client={apolloClient}>
+          <Routing
+            isAuthenticated={isAuthenticated}
+            logout={logout}
+            login={login}
+            errorMessage={errorMessage}
+            user={user}
           />
-          {isAuthenticated ? (
-          <Route exact path="/people"
-            render={(props) =>
-              <People accessToken={accessToken}
-              />
-            }
+        </ApolloProvider>
+      ) : (
+
+          <Routing
+            isAuthenticated={isAuthenticated}
+            logout={logout}
+            login={login}
+            errorMessage={errorMessage}
+            user={user}
           />
-          ) : ( 
-            <div>Go Away</div>
-          )
-          }
-        </Container>
-      </div>
-    </Router>
+
+        )}
+
+    </>
+      
+    
   );
-  function setErrorMessage(message: string, debug: string) {
-    setError({
-      message: message, debugProp: debug
-    });
-  }
+function setErrorMessage(message: string, debug: string) {
+  setError({
+    message: message, debugProp: debug
+  });
+}
 }
 
 export default App;

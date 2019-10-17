@@ -1,21 +1,35 @@
 import { ApolloServer, gql } from 'apollo-server-lambda'
 import { RESTDataSource } from 'apollo-datasource-rest'
+import { DataSource } from 'apollo-datasource'
 
 
 const typeDefs = gql`
 type User {
+    id: ID!
     displayName: String
+  }
+
+  type Photo { 
+    #   id: ID!
+      photoData: String 
   }
 
   type Query {
     users: [User]
+    user(id: ID!): User
+    userPhoto(id: ID!): Photo
   }
+
+
 `
 
 const resolvers = {
     Query: {
-        users: (_, __, { dataSources }) => dataSources.usersApi.getUsers()
-    },
+        users: (_, __, { dataSources }) => dataSources.usersApi.getUsers(),
+        user: (_, { id }, { dataSources }) => dataSources.usersApi.getUser(id),
+        userPhoto: (_, { id }, { dataSources }) => dataSources.usersApi.getPhotoForUser(id)
+    }
+
 }
 
 class UsersAPI extends RESTDataSource {
@@ -31,6 +45,22 @@ class UsersAPI extends RESTDataSource {
         const data = await this.get(`users`)
         return data.value
     }
+    async getUser(id: string) {
+        const data = await this.get(`users/${id}`)
+        // console.log(data)
+        return data
+    }
+    async getPhotoForUser(id: string) {
+        const data = await this.get(`users/${id}/photo/$value`)
+        
+        const buf = Buffer.from(data)
+        const json = JSON.stringify(buf)
+        console.log(json)
+
+        // return json
+        // console.log("I Like Jam")
+        return {"photoData":json}
+    }
 }
 
 const server = new ApolloServer({
@@ -42,8 +72,9 @@ const server = new ApolloServer({
         }
     },
     context: (req) => {
+        // console.log(req.event.headers.authorization)
         return {
-            token: req.event.headers.authorization 
+            token: req.event.headers.authorization
         };
     },
 });
