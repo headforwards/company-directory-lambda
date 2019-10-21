@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { AuthResponse } from 'msal'
+import React, { useState, useEffect, useContext } from 'react'
+import TokenContext from '../utils/TokenContext'
 import { getPhotoForUser } from '../utils/MSGraphService'
-import UserAvatar from './NavBar/UserAvatar'
-
 
 interface AvatarProps {
-    accessToken: AuthResponse|null
     userId: string | undefined,
     displayName?: string
 }
@@ -17,15 +14,16 @@ const emptyAvatarStyle= {
     color: 'lightslategray'
 } as any
 
-const Avatar: React.SFC<AvatarProps> = ({accessToken, userId, displayName}) => {
+const Avatar: React.SFC<AvatarProps> = ({ userId, displayName}) => {
 
     const [imageUrl, setImageUrl] = useState<string|undefined>('')
+    const token = useContext(TokenContext)
 
     useEffect(() => {
         async function getAvatar() {
-            if (accessToken && userId) {
+            if (userId && token ) {
                 try {
-                    const photoUrl = await getPhotoForUser(accessToken, userId);
+                    const photoUrl = await getPhotoForUser(token, userId);
                     setImageUrl(photoUrl);
                     console.log(photoUrl)
 
@@ -35,7 +33,7 @@ const Avatar: React.SFC<AvatarProps> = ({accessToken, userId, displayName}) => {
             }
         }
         getAvatar()
-    }, [userId, accessToken, displayName])
+    }, [userId, token, displayName])
 
  if (imageUrl) {
     return (

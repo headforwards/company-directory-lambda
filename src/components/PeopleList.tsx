@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
-import { AuthResponse } from 'msal'
+
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks';
 import Avatar from './Avatar';
 
-interface PeopleListProps {
-    accessToken: AuthResponse | null
-}
-
-const PeopleList: React.SFC<PeopleListProps> = ({ accessToken }) => {
+const PeopleList: React.SFC = () => {
 
     const PEOPLE_DATA = gql`
     {
@@ -31,7 +27,7 @@ const PeopleList: React.SFC<PeopleListProps> = ({ accessToken }) => {
         <div key={id}>
             <p>
                 {displayName}
-                <Avatar accessToken={accessToken} userId={id} />
+                <Avatar userId={id} />
             </p>
         </div>
     ));

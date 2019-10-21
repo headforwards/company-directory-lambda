@@ -10,6 +10,7 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { ApolloProvider } from '@apollo/react-hooks';
+import { TokenProvider } from './utils/TokenContext'
 
 const App: React.SFC = () => {
 
@@ -135,6 +136,7 @@ const App: React.SFC = () => {
 
   return (
     <>
+    <TokenProvider value={graphToken ? graphToken : null}>
       <ApolloProvider client={apolloClient}>
         <Routing
           isAuthenticated={isAuthenticated}
@@ -145,6 +147,7 @@ const App: React.SFC = () => {
           user={user}
         />
       </ApolloProvider>
+      </TokenProvider>
     </>
 
 

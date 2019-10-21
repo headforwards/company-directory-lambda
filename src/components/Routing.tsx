@@ -44,7 +44,7 @@ const Routing: React.SFC<RoutingProps> = ({ isAuthenticated, accessToken, login,
             isAuthenticated ? (<Route exact path="/people"
               render={(props) =>
                 <People
-                  accessToken={accessToken}
+
                 />
               }
             />) : (
