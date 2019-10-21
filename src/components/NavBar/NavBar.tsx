@@ -30,50 +30,41 @@ const NavBar: React.SFC<NavBarProps> = ({ isAuthenticated, user, authButtonMetho
   let calendarLink = null;
   if (isAuthenticated) {
     calendarLink = (
-      <NavItem>
-        <RouterNavLink to="/calendar" className="nav-link" exact>Calendar</RouterNavLink>
-      </NavItem>
+        <RouterNavLink to="/calendar" className="link dim gray f6 f5-ns dib mr3" exact>Calendar</RouterNavLink>
     );
   }
 
   let peopleLink = null;
   if (isAuthenticated) {
     peopleLink = (
-      <NavItem>
-        <RouterNavLink to="/people" className="nav-link" exact>People</RouterNavLink>
-      </NavItem>
+        <RouterNavLink to="/people" className="link dim gray f6 f5-ns dib mr3" exact>People</RouterNavLink>
     );
   }
 
   return (
     <div>
-      <Navbar color="dark" dark expand="md" fixed="top">
-        <Container>
+      <nav className="pa3 pa4-ns">
+
           {/* <NavbarBrand>React Graph Tutorial</NavbarBrand> */}
-          <NavbarToggler onClick={toggle} />
-          <Collapse isOpen={isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              <NavItem>
-                <RouterNavLink to="/" className="nav-link" exact>Home</RouterNavLink>
-              </NavItem>
+
+
+
+
+                <RouterNavLink to="/" className="link dim black b f6 f5-ns dib mr3" exact>Home</RouterNavLink>
+
               {calendarLink}
               {peopleLink}
-            </Nav>
-            <Nav className="justify-content-end" navbar>
-              <NavItem>
-                <NavLink href="https://developer.microsoft.com/graph/docs/concepts/overview" target="_blank">
-                  <i className="fas fa-external-link-alt mr-1"></i>
-                  Docs
-                  </NavLink>
-              </NavItem>
+
+
+
               <AuthNavItem
                 isAuthenticated={isAuthenticated}
                 authButtonMethod={authButtonMethod}
                 user={user} />
-            </Nav>
-          </Collapse>
-        </Container>
-      </Navbar>
+
+
+
+      </nav>
     </div>
   );
 }

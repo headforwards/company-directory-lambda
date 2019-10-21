@@ -29,7 +29,6 @@ const App: React.SFC = () => {
     uri: '/.netlify/functions/graphql',
   })
 
-  // let token: Au
   const authLink = setContext((_, { headers }) => {
     return getAToken()
       .then((token) => {
