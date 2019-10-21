@@ -17,6 +17,7 @@ const AuthNavItem: React.SFC<AuthNavItemProps> = ({ isAuthenticated, user, authB
             <div className="tr">
             <UserAvatar user={user} />
             <h5 className="dropdown-item-text mb-0">{user.displayName}</h5>
+            <a onClick={authButtonMethod}>Sign Out</a>
             </ div>
         );
     }

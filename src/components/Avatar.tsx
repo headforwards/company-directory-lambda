@@ -40,15 +40,14 @@ const Avatar: React.SFC<AvatarProps> = ({accessToken, userId, displayName}) => {
  if (imageUrl) {
     return (
         <>
-
-            <img src={imageUrl} width={200} height={200} title={displayName} alt={displayName} />
+            <img src={imageUrl} width={200} height={200} title={displayName} alt={`Photo of ${displayName}`} />
         </>
     )
  } else return (
      <div 
      className="fas fa-user-circle fa-lg rounded-circle align-self-center mr-2"
      style={emptyAvatarStyle}
-     >
+        >
 
      </div>
  )

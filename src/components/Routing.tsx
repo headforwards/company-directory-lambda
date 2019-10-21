@@ -1,12 +1,10 @@
 import React from 'react'
 import { AuthResponse } from 'msal'
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Container } from 'reactstrap';
 import NavBar from './NavBar/NavBar';
 import Welcome from '../pages/Welcome';
 import Calendar from '../pages/Calendar'
 import People from '../pages/People'
-import 'bootstrap/dist/css/bootstrap.css';
 
 interface RoutingProps {
   isAuthenticated: boolean
@@ -26,7 +24,7 @@ const Routing: React.SFC<RoutingProps> = ({ isAuthenticated, accessToken, login,
           isAuthenticated={isAuthenticated}
           authButtonMethod={isAuthenticated ? logout : login}
           user={user} />
-        <Container>
+        <div>
           {errorMessage}
           <Route exact path="/"
             render={(props) =>
@@ -54,7 +52,7 @@ const Routing: React.SFC<RoutingProps> = ({ isAuthenticated, accessToken, login,
               )
           }
 
-        </Container>
+        </div>
       </div>
     </Router>
   )

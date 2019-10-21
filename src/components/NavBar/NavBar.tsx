@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
 import { NavLink as RouterNavLink } from 'react-router-dom';
-import {
-  NavItem,
-  NavLink,
-  Navbar,
-  Container,
-  NavbarBrand,
-  NavbarToggler,
-  Collapse,
-  Nav
-} from 'reactstrap';
 import AuthNavItem from './AuthNavItem'
 import '@fortawesome/fontawesome-free/css/all.css';
 

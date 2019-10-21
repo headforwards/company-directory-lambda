@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'reactstrap';
 import moment from 'moment';
 import _ from 'lodash'
 import config from '../Config';
@@ -37,32 +36,32 @@ export const Calendar: React.SFC = () => {
 
 
     return (
-        <div>
-            <h1>Calendar</h1>
-            <Table>
+        <article className="pa3 pa5-ns">
+            <h1 className="f3 f2-m f1-l center">Calendar</h1>
+            <table className="f6 w-100 mw8 center" cellSpacing="0">
                 <thead>
                     <tr>
-                        <th scope="col">Organizer</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">End</th>
+                        <th className="fw6 bb b--black-20 tl pb3 pr3 bg-white" scope="col">Organizer</th>
+                        <th className="fw6 bb b--black-20 tl pb3 pr3 bg-white"  scope="col">Subject</th>
+                        <th className="fw6 bb b--black-20 tl pb3 pr3 bg-white"  scope="col">Start</th>
+                        <th className="fw6 bb b--black-20 tl pb3 pr3 bg-white"  scope="col">End</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="lh-copy">
                     {eventsData.map(
                         function (event: MicrosoftGraph.Event) {
                             return (
                                 <tr key={event.id}>
-                                    <td>{_.get(event,'organizer.emailAddress.name')}</td>
-                                    <td>{event.subject}</td>
-                                    <td>{formatDateTime(_.get(event,'start.dateTime'))}</td>
-                                    <td>{formatDateTime(_.get(event,'end.dateTime'))}</td>
+                                    <td className="pv3 pr3 bb b--black-20">{_.get(event,'organizer.emailAddress.name')}</td>
+                                    <td className="pv3 pr3 bb b--black-20">{event.subject}</td>
+                                    <td className="pv3 pr3 bb b--black-20">{formatDateTime(_.get(event,'start.dateTime'))}</td>
+                                    <td className="pv3 pr3 bb b--black-20">{formatDateTime(_.get(event,'end.dateTime'))}</td>
                                 </tr>
                             );
                         })}
                 </tbody>
-            </Table>
-        </div>
+            </table>
+        </article>
     );
 }
 
