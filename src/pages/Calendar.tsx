@@ -3,7 +3,7 @@ import { Table } from 'reactstrap';
 import moment from 'moment';
 import _ from 'lodash'
 import config from '../Config';
-import { getEvents } from '../MSGraphService';
+import { getEvents } from '../utils/MSGraphService';
 
 import * as MicrosoftGraph from '@microsoft/microsoft-graph-types'
 

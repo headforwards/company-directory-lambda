@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
+import { AuthResponse } from 'msal'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks';
+import Avatar from './Avatar';
 
-const PeopleList: React.SFC = () => {
+interface PeopleListProps {
+    accessToken: AuthResponse | null
+}
+
+const PeopleList: React.SFC<PeopleListProps> = ({ accessToken }) => {
 
     const PEOPLE_DATA = gql`
     {
@@ -10,10 +16,6 @@ const PeopleList: React.SFC = () => {
             id
             displayName
         }
-        # user(id:"d3311c74-2095-4576-b793-b4bcce275078") {
-        #     id 
-        #     displayName
-        # }
     }
     `
 
@@ -25,10 +27,11 @@ const PeopleList: React.SFC = () => {
     console.log("data:")
     console.log(data)
 
-    return data.users.map(({ id, displayName }: {id: string, displayName:string}) => (
+    return data.users.map(({ id, displayName }: { id: string, displayName: string }) => (
         <div key={id}>
             <p>
                 {displayName}
+                <Avatar accessToken={accessToken} userId={id} />
             </p>
         </div>
     ));

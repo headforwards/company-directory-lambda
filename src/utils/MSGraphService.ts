@@ -1,4 +1,5 @@
 import { Client } from '@microsoft/microsoft-graph-client'
+import { AuthResponse } from 'msal'
 
 const getAuthenticatedClient = (accessToken: any) => {
   // Initialize Graph client
@@ -42,7 +43,7 @@ export async function getPeople(accessToken: any) {
   return people
 }
 
-export async function getPhotoForUser(accessToken: string, userId: string) {
+export async function getPhotoForUser(accessToken: AuthResponse, userId: string) {
   const client = getAuthenticatedClient(accessToken)
   let blobUrl: string | undefined
   try {
@@ -55,6 +56,7 @@ export async function getPhotoForUser(accessToken: string, userId: string) {
     console.log(`Got Avatar for ${userId}`)
   } catch (err) {
     blobUrl = undefined
+    console.log(err)
     console.log(`No Avatar for ${userId}`)
   }
   return blobUrl

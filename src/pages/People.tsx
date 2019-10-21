@@ -1,12 +1,17 @@
 import React from 'react';
+import { AuthResponse } from 'msal'
 import PeopleList from '../components/PeopleList';
 
-const People: React.SFC= () => {
+interface PeopleProps {
+    accessToken: AuthResponse | null
+}
+
+const People: React.SFC<PeopleProps>= ({ accessToken }) => {
 
     return (
         <div>
             <h1>People</h1>
-                    <PeopleList />
+                    <PeopleList accessToken={accessToken} />
         </div>
     );
 }

@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import config from './Config'
-import { UserAgentApplication } from 'msal'
-import { getUserDetails } from './MSGraphService'
+import { UserAgentApplication, AuthResponse } from 'msal'
+import { getUserDetails } from './utils/MSGraphService'
 import Routing from './components/Routing'
 import ErrorMessage, { ErrorMessageProps } from './components/ErrorMessage';
-import getAccessToken from './utils/authutils'
-// import { ApolloClient } from 'apollo-client'
-// import { createHttpLink } from 'apollo-link-http'
-// import { setContext } from 'apollo-link-context'
-// import {InMemoryCache} from 'apollo-cache-inmemory'
-
-import ApolloClient from 'apollo-boost'
+import ApolloClient from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { ApolloProvider } from '@apollo/react-hooks';
-
-
 
 const App: React.SFC = () => {
 
@@ -28,25 +23,43 @@ const App: React.SFC = () => {
     }
   });
 
-  // let apolloClientNoAuth: ApolloClient<any> = new ApolloClient({
-  //   uri: '/.netlify/functions/graphql',
-  //   request: (operation) => {
-  //     const token = 'SOMESTRING' // localStorage.getItem('token')
-  //     operation.setContext({
-  //       headers: {
-  //         authorization: token ? token : ''
-  //       }
-  //     })
-  //   }
-  // })
-
   let signedInUser = userAgentApplication.getAccount();
+
+  const httpLink = createHttpLink({
+    uri: '/.netlify/functions/graphql',
+  })
+
+  // let token: Au
+  const authLink = setContext((_, { headers }) => {
+    return getAToken()
+      .then((token) => {
+        if (!graphToken) {
+          setGraphToken(token)
+        }
+        return token.accessToken
+      })
+      .then((accessToken) => {
+        return {
+          headers: {
+            ...headers,
+            authorization: accessToken ? accessToken : "",
+          }
+        }
+      })
+
+  });
+
+  const apolloClient = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+    connectToDevTools: true //TODO Hook this up to an Environment Variable
+  })
 
   const [isAuthenticated, setAuthenticated] = useState(signedInUser !== null)
   const [user, setUser] = useState({})
   const [error, setError] = useState<ErrorMessageProps | null>(null)
-  const [accessToken, setAccessToken] = useState<string | null>(null)
-  const [apolloClient, setApolloClient] = useState<ApolloClient<any>>()
+  const [graphToken, setGraphToken] = useState<AuthResponse>()
+  // const [apolloClient, setApolloClient] = useState<ApolloClient<any>>(apolloClientAuth)
 
   let errorMessage = null;
   if (error) {
@@ -78,6 +91,7 @@ const App: React.SFC = () => {
       scopes: config.scopes
     });
   }
+
   async function getUserProfile() {
     try {
       // Get the access token silently
@@ -97,22 +111,7 @@ const App: React.SFC = () => {
           email: user.email || user.userPrincipalName
         })
         setError(null)
-        setAccessToken(token.accessToken)
-        const apolloClientWithAuth = new ApolloClient({
-          uri: '/.netlify/functions/graphql',
-          request: (operation) => {
-
-            operation.setContext({
-              headers: {
-                authorization: token ? token.accessToken : ''
-              }
-            })
-          }
-        })
-        setApolloClient(apolloClientWithAuth)
-
-        //TODO Create a new ApolloClient with the accessToken and set update the provider
-
+        setGraphToken(token)
       }
     }
     catch (err) {
@@ -128,7 +127,6 @@ const App: React.SFC = () => {
           debugProp: JSON.stringify(err)
         }
       }
-
       setAuthenticated(false)
       setError(error)
       setUser({})
@@ -138,37 +136,25 @@ const App: React.SFC = () => {
 
   return (
     <>
-      {isAuthenticated && !!apolloClient ? (
-        <ApolloProvider client={apolloClient}>
-          <Routing
-            isAuthenticated={isAuthenticated}
-            logout={logout}
-            login={login}
-            errorMessage={errorMessage}
-            user={user}
-          />
-        </ApolloProvider>
-      ) : (
-
-          <Routing
-            isAuthenticated={isAuthenticated}
-            logout={logout}
-            login={login}
-            errorMessage={errorMessage}
-            user={user}
-          />
-
-        )}
-
+      <ApolloProvider client={apolloClient}>
+        <Routing
+          isAuthenticated={isAuthenticated}
+          accessToken={graphToken ? graphToken : null}
+          logout={logout}
+          login={login}
+          errorMessage={errorMessage}
+          user={user}
+        />
+      </ApolloProvider>
     </>
-      
-    
+
+
   );
-function setErrorMessage(message: string, debug: string) {
-  setError({
-    message: message, debugProp: debug
-  });
-}
+  function setErrorMessage(message: string, debug: string) {
+    setError({
+      message: message, debugProp: debug
+    });
+  }
 }
 
 export default App;

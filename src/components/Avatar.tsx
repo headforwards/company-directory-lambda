@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { getPhotoForUser } from '../MSGraphService'
+import { AuthResponse } from 'msal'
+import { getPhotoForUser } from '../utils/MSGraphService'
 import UserAvatar from './NavBar/UserAvatar'
 
 
 interface AvatarProps {
-    accessToken: string,
+    accessToken: AuthResponse|null
     userId: string | undefined,
     displayName?: string
 }
@@ -26,9 +27,10 @@ const Avatar: React.SFC<AvatarProps> = ({accessToken, userId, displayName}) => {
                 try {
                     const photoUrl = await getPhotoForUser(accessToken, userId);
                     setImageUrl(photoUrl);
+                    console.log(photoUrl)
 
                 } catch (err) {
-                    // this.props.showError('ERROR', JSON.stringify(err));
+                    console.log(err);
                 }
             }
         }

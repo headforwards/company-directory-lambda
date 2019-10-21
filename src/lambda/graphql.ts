@@ -59,7 +59,7 @@ class UsersAPI extends RESTDataSource {
 
         // return json
         // console.log("I Like Jam")
-        return {"photoData":json}
+        return {"photoData":data.toString()}
     }
 }
 
