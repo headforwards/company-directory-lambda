@@ -42,7 +42,7 @@ class UsersAPI extends RESTDataSource {
         request.headers.set('Authorization', this.context.token)
     }
     async getUsers() {
-        const data = await this.get(`users`)
+        const data = await this.get(`users?$top=200`)
         return data.value
     }
     async getUser(id: string) {
