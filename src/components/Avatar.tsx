@@ -3,25 +3,25 @@ import TokenContext from '../utils/TokenContext'
 import { getPhotoForUser } from '../utils/MSGraphService'
 
 interface AvatarProps {
-    userId: string | undefined,
-    displayName?: string
+    userId: string | undefined
+    displayName: string | undefined
 }
 
-const emptyAvatarStyle= {
-    width: '200px', 
-    fontSize:'80px',
+const emptyAvatarStyle = {
+    width: '200px',
+    fontSize: '80px',
     textAlign: 'center',
     color: 'lightslategray'
 } as any
 
-const Avatar: React.SFC<AvatarProps> = ({ userId, displayName}) => {
+const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
 
-    const [imageUrl, setImageUrl] = useState<string|undefined>('')
+    const [imageUrl, setImageUrl] = useState<string | undefined>('')
     const token = useContext(TokenContext)
 
     useEffect(() => {
         async function getAvatar() {
-            if (userId && token ) {
+            if (userId && token) {
                 try {
                     const photoUrl = await getPhotoForUser(token, userId);
                     setImageUrl(photoUrl);
@@ -35,20 +35,21 @@ const Avatar: React.SFC<AvatarProps> = ({ userId, displayName}) => {
         getAvatar()
     }, [userId, token, displayName])
 
- if (imageUrl) {
-    return (
-        <>
-            <img src={imageUrl} width={200} height={200} title={displayName} alt={`Photo of ${displayName}`} />
-        </>
-    )
- } else return (
-     <div 
-     className="fas fa-user-circle fa-lg rounded-circle align-self-center mr-2"
-     style={emptyAvatarStyle}
+    if (imageUrl) {
+        return (
+            <>
+                <img className="db" src={imageUrl} title={displayName} alt={`Photo of ${displayName}`} />
+            </>
+
+        )
+    } else return (
+        <div
+            className="fas fa-user-circle fa-lg rounded-circle align-self-center mr-2"
+            style={emptyAvatarStyle}
         >
 
-     </div>
- )
+        </div>
+    )
 
 }
 

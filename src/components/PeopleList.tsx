@@ -24,12 +24,16 @@ const PeopleList: React.SFC = () => {
     console.log(data)
 
     return data.users.map(({ id, displayName }: { id: string, displayName: string }) => (
-        <div key={id}>
-            <p>
-                {displayName}
-                <Avatar userId={id} />
-            </p>
-        </div>
+
+        <section className="tc pa1 pa2-ns">
+            <article className="hide-child relative ba b--black-20 mw5 center">
+                <Avatar userId={id} displayName={displayName} />
+                <div className="pa2 bt b--black-20">
+                    <a className="f6 db link dark-blue hover-blue" href="#">{displayName}</a>
+                </div>
+            </article>
+        </section>
+
     ));
 }
 
