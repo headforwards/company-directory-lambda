@@ -38,7 +38,7 @@ const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
     if (imageUrl) {
         return (
             <>
-                <img className="db" src={imageUrl} title={displayName} alt={`Photo of ${displayName}`} />
+                <img className="db w-100" src={imageUrl} title={displayName} alt={`Photo of ${displayName}`} />
             </>
 
         )
