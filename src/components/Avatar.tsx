@@ -11,7 +11,7 @@ const emptyAvatarStyle = {
     width: '200px',
     fontSize: '80px',
     textAlign: 'center',
-    color: 'lightslategray'
+    color: 'lightgray'
 } as any
 
 const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {

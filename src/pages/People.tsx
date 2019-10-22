@@ -1,13 +1,15 @@
 import React from 'react';
 import PeopleList from '../components/PeopleList';
 
-const People: React.SFC= () => {
+const People: React.SFC = () => {
 
     return (
-        <div>
-            <h1>People</h1>
-                    <PeopleList />
-        </div>
+        <article>
+            <h1 className="f3 fw4 pa3 mv0">People</h1>
+            <div className="cf pa2">
+                <PeopleList />
+            </div>
+        </article>
     );
 }
 
