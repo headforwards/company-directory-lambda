@@ -43,12 +43,7 @@ const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
 
         )
     } else return (
-        <div
-            className="fas fa-user-circle fa-lg rounded-circle align-self-center mr-2"
-            style={emptyAvatarStyle}
-        >
-
-        </div>
+     <img className="db w-100" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" title={`What does ${displayName} look like?`} alt={`No-one knows what ${displayName} looks like!`} />
     )
 
 }
