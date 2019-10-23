@@ -7,6 +7,10 @@ const typeDefs = gql`
 type User {
     id: ID!
     displayName: String
+    givenName: String
+    surname: String
+    userType: String
+    accountEnabled: Boolean
   }
 
   type Photo { 
@@ -42,7 +46,7 @@ class UsersAPI extends RESTDataSource {
         request.headers.set('Authorization', this.context.token)
     }
     async getUsers() {
-        const data = await this.get(`users?$top=200`)
+        const data = await this.get(`users?$filter=accountEnabled eq true and userType eq 'Member'&$select=id,accountEnabled,givenName,surname,displayname,userType`)
         return data.value
     }
     async getUser(id: string) {

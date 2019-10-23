@@ -11,6 +11,10 @@ const PeopleList: React.SFC = () => {
         users {
             id
             displayName
+            givenName
+            surname
+            accountEnabled
+            userType
         }
     }
     `
@@ -23,7 +27,10 @@ const PeopleList: React.SFC = () => {
     console.log("data:")
     console.log(data)
 
-    return data.users.map(({ id, displayName }: { id: string, displayName: string }) => (
+    const actualPeople = data.users.filter((user: any) => {
+        return user.givenName !== null && user.surname !== null
+    })
+    return actualPeople.map(({ id, displayName, surName }: { id: string, displayName: string, surName: string }) => (
 
         <div className="fl w-50 w-25-m w-20-l pa2">
             <article className="hide-child relative ba b--black-20 mw5 center">
