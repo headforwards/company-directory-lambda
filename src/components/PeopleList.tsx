@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks';
-import Avatar from './Avatar';
+import Person from './Person'
 
 const PeopleList: React.SFC = () => {
 
@@ -30,18 +30,10 @@ const PeopleList: React.SFC = () => {
     const actualPeople = data.users.filter((user: any) => {
         return user.givenName !== null && user.surname !== null
     })
-    return actualPeople.map(({ id, displayName, surName }: { id: string, displayName: string, surName: string }) => (
-
-        <div className="fl w-50 w-25-m w-20-l pa2">
-            <article className="hide-child relative ba b--black-20 mw5 center">
-                <Avatar userId={id} displayName={displayName} />
-                <div className="pa2 bt b--black-20">
-                    <a className="f6 db link dark-blue hover-blue" href="#">{displayName}</a>
-                </div>
-            </article>
-        </div>
-
-    ));
+    return actualPeople.map(({ id, displayName }: { id: string, displayName: string, surName: string }) => (
+        <Person id={id} displayName={displayName} />
+    )
+    )
 }
 
 export default PeopleList
