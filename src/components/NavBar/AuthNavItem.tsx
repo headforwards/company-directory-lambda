@@ -1,8 +1,6 @@
 import React from 'react'
 import UserAvatar from './UserAvatar'
 
-
-
 interface AuthNavItemProps {
     isAuthenticated: boolean
     user: any,

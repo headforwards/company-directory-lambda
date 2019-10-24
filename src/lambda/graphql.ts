@@ -1,7 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-lambda'
 import { RESTDataSource } from 'apollo-datasource-rest'
-import { DataSource } from 'apollo-datasource'
-
 
 const typeDefs = gql`
 type User {
@@ -51,18 +49,10 @@ class UsersAPI extends RESTDataSource {
     }
     async getUser(id: string) {
         const data = await this.get(`users/${id}`)
-        // console.log(data)
         return data
     }
     async getPhotoForUser(id: string) {
         const data = await this.get(`users/${id}/photo/$value`)
-        
-        const buf = Buffer.from(data)
-        const json = JSON.stringify(buf)
-        console.log(json)
-
-        // return json
-        // console.log("I Like Jam")
         return {"photoData":data.toString()}
     }
 }
@@ -76,7 +66,6 @@ const server = new ApolloServer({
         }
     },
     context: (req) => {
-        // console.log(req.event.headers.authorization)
         return {
             token: req.event.headers.authorization
         };

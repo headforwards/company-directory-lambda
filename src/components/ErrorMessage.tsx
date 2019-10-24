@@ -1,10 +1,8 @@
 import React from 'react';
 
 export interface ErrorMessageProps {
-  // error: {
   message: string,
   debugProp?: string
-  // }
 }
 
 const ErrorMessage: React.SFC<ErrorMessageProps> = ({ message, debugProp }) => {
@@ -17,7 +15,6 @@ const ErrorMessage: React.SFC<ErrorMessageProps> = ({ message, debugProp }) => {
     <div className="flex items-center justify-center pa4 bg-lightest-red black">
       <p className="mb-3">{message}</p>
       {debug}
-      <span className="lh-title ml3">Some info that you want to call attention to.</span>
     </div>
 
   );

@@ -8,7 +8,6 @@ interface PersonProps {
 
 const Person: React.SFC<PersonProps> = ({ id, displayName }) => {
 
-
     return (
         <div className="fl w-50 w-25-m w-20-l pa2">
             <article className="hide-child relative ba b--black-20 mw5 center">

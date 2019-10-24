@@ -7,13 +7,6 @@ interface AvatarProps {
     displayName: string | undefined
 }
 
-const emptyAvatarStyle = {
-    width: '200px',
-    fontSize: '80px',
-    textAlign: 'center',
-    color: 'lightgray'
-} as any
-
 const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
 
     const [imageUrl, setImageUrl] = useState<string | undefined>('')
@@ -25,8 +18,6 @@ const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
                 try {
                     const photoUrl = await getPhotoForUser(token, userId);
                     setImageUrl(photoUrl);
-                    console.log(photoUrl)
-
                 } catch (err) {
                     console.log(err);
                 }
@@ -43,7 +34,7 @@ const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
 
         )
     } else return (
-     <img className="db w-100" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" title={`What does ${displayName} look like?`} alt={`No-one knows what ${displayName} looks like!`} />
+        <img className="db w-100" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" title={`What does ${displayName} look like?`} alt={`No-one knows what ${displayName} looks like!`} />
     )
 
 }

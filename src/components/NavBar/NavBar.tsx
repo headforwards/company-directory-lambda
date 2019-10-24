@@ -20,40 +20,27 @@ const NavBar: React.SFC<NavBarProps> = ({ isAuthenticated, user, authButtonMetho
   let calendarLink = null;
   if (isAuthenticated) {
     calendarLink = (
-        <RouterNavLink to="/calendar" className="link dim gray f6 f5-ns dib mr3" exact>Calendar</RouterNavLink>
+      <RouterNavLink to="/calendar" className="link dim gray f6 f5-ns dib mr3" exact>Calendar</RouterNavLink>
     );
   }
 
   let peopleLink = null;
   if (isAuthenticated) {
     peopleLink = (
-        <RouterNavLink to="/people" className="link dim gray f6 f5-ns dib mr3" exact>People</RouterNavLink>
+      <RouterNavLink to="/people" className="link dim gray f6 f5-ns dib mr3" exact>People</RouterNavLink>
     );
   }
 
   return (
     <div>
       <nav className="pa3 pa4-ns">
-
-          {/* <NavbarBrand>React Graph Tutorial</NavbarBrand> */}
-
-
-
-
-                <RouterNavLink to="/" className="link dim black b f6 f5-ns dib mr3" exact>Home</RouterNavLink>
-
-              {calendarLink}
-              {peopleLink}
-
-
-
-              <AuthNavItem
-                isAuthenticated={isAuthenticated}
-                authButtonMethod={authButtonMethod}
-                user={user} />
-
-
-
+        <RouterNavLink to="/" className="link dim black b f6 f5-ns dib mr3" exact>Home</RouterNavLink>
+        {calendarLink}
+        {peopleLink}
+        <AuthNavItem
+          isAuthenticated={isAuthenticated}
+          authButtonMethod={authButtonMethod}
+          user={user} />
       </nav>
     </div>
   );
