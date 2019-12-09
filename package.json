@@ -25,6 +25,7 @@
     "apollo-server-lambda": "^2.9.6",
     "bootstrap": "^4.3.1",
     "graphql": "^14.5.8",
+    "jsonexport": "^2.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "msal": "^1.0.0",

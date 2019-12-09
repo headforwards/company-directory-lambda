@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import DownloadButton from './DownloadButton'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks';
 import Person from './Person'
@@ -30,10 +30,19 @@ const PeopleList: React.SFC = () => {
     const actualPeople = data.users.filter((user: any) => {
         return user.givenName !== null && user.surname !== null
     })
-    return actualPeople.map(({ id, displayName }: { id: string, displayName: string, surName: string }) => (
-        <Person id={id} displayName={displayName} />
+
+    return (
+        <>
+        <DownloadButton data={actualPeople} />
+        {
+            actualPeople.map(({ id, displayName }: { id: string, displayName: string, surName: string }) => (
+                <Person id={id} displayName={displayName} />
+            )
+            )
+        }
+        </>
     )
-    )
+
 }
 
 export default PeopleList
