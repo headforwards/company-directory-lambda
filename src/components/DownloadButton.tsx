@@ -14,7 +14,6 @@ const DownloadButton: React.SFC<DownloadProps> = ({ data }) => {
 
     const exportCSV = (objectData:any[]) => {
        
-
         jsonexport(objectData, function (err: any, csv: any) {
             if (err) return console.log(err);
             console.log(csv);
