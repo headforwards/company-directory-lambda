@@ -9,6 +9,7 @@ type User {
     surname: String
     userType: String
     accountEnabled: Boolean
+    department: String
   }
 
   type Photo { 
@@ -51,7 +52,7 @@ class MSGraphAPI extends RESTDataSource {
         request.headers.set('Authorization', this.context.token)
     }
     async getUsers() {
-        const data = await this.get(`users?$top=250&$filter=accountEnabled eq true and userType eq 'Member'&$select=id,accountEnabled,givenName,surname,displayname,userType`)
+        const data = await this.get(`users?$top=250&$filter=accountEnabled eq true and userType eq 'Member'&$select=id,accountEnabled,givenName,surname,displayname,userType,department`)
         return data.value
     }
     async getUser(id: string) {

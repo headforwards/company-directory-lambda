@@ -15,6 +15,7 @@ const PeopleList: React.SFC = () => {
             surname
             accountEnabled
             userType
+            department
         }
     }
     `
@@ -35,8 +36,8 @@ const PeopleList: React.SFC = () => {
         <>
         <DownloadButton data={actualPeople} />
         {
-            actualPeople.map(({ id, displayName }: { id: string, displayName: string, surName: string }) => (
-                <Person id={id} displayName={displayName} />
+            actualPeople.map(({ id, displayName, department }: { id: string, displayName: string, surName: string, department: string }) => (
+                <Person id={id} displayName={displayName} department={department}/>
             )
             )
         }
