@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks';
 import Person from './Person'
 import isActualPerson from '../functions/users/filterUsers'
+import sortUsersByDepartment from '../functions/users/sortUsersByDepartment'
 
 const PeopleList: React.SFC = () => {
 
@@ -33,9 +34,11 @@ const PeopleList: React.SFC = () => {
         return isActualPerson(user)
     })
 
+    const sortedPeople = sortUsersByDepartment(actualPeople)
+
     return (
         <>
-        <DownloadButton data={actualPeople} />
+        <DownloadButton data={sortedPeople} />
         {
             actualPeople.map(({ id, displayName, department }: { id: string, displayName: string, surName: string, department: string }) => (
                 <Person id={id} displayName={displayName} department={department}/>

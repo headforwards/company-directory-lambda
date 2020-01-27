@@ -4,6 +4,13 @@ const sortUsersByDepartment = (users: any[]) => {
 
 
 const sortFunc = (a: any, b: any) => {
+    if(b.department === null) {
+        return -1
+    }
+    if(a.department === null) {
+        return 1
+    }
+
     let deptA = a.department.toUpperCase()
     let deptB = b.department.toUpperCase()
 
@@ -13,9 +20,7 @@ const sortFunc = (a: any, b: any) => {
     if (deptB < deptA) {
         return 1
     }
-
     return 0
-
 }
 
 export default sortUsersByDepartment
