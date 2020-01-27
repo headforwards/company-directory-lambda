@@ -16,10 +16,16 @@ type User {
       photoData: String 
   }
 
+  type Group {
+      id: ID!
+  }
+
+
   type Query {
     users: [User]
     user(id: ID!): User
     userPhoto(id: ID!): Photo
+    groups: [Group]
   }
 
 
@@ -27,14 +33,15 @@ type User {
 
 const resolvers = {
     Query: {
-        users: (_, __, { dataSources }) => dataSources.usersApi.getUsers(),
-        user: (_, { id }, { dataSources }) => dataSources.usersApi.getUser(id),
-        userPhoto: (_, { id }, { dataSources }) => dataSources.usersApi.getPhotoForUser(id)
+        users: (_, __, { dataSources }) => dataSources.msGraphApi.getUsers(),
+        user: (_, { id }, { dataSources }) => dataSources.msGraphApi.getUser(id),
+        userPhoto: (_, { id }, { dataSources }) => dataSources.msGraphApi.getPhotoForUser(id),
+        groups: (_, __, {dataSources}) => dataSources.msGraphApi.getGroups()
     }
 
 }
 
-class UsersAPI extends RESTDataSource {
+class MSGraphAPI extends RESTDataSource {
     constructor() {
         super()
         this.baseURL = 'https://graph.microsoft.com/v1.0/'
@@ -44,7 +51,7 @@ class UsersAPI extends RESTDataSource {
         request.headers.set('Authorization', this.context.token)
     }
     async getUsers() {
-        const data = await this.get(`users?$filter=accountEnabled eq true and userType eq 'Member'&$select=id,accountEnabled,givenName,surname,displayname,userType`)
+        const data = await this.get(`users?$top=250&$filter=accountEnabled eq true and userType eq 'Member'&$select=id,accountEnabled,givenName,surname,displayname,userType`)
         return data.value
     }
     async getUser(id: string) {
@@ -55,6 +62,10 @@ class UsersAPI extends RESTDataSource {
         const data = await this.get(`users/${id}/photo/$value`)
         return {"photoData":data.toString()}
     }
+    async getGroups() {
+        const data = await this.get(`groups`)
+        return data
+    }
 }
 
 const server = new ApolloServer({
@@ -62,10 +73,11 @@ const server = new ApolloServer({
     resolvers,
     dataSources: () => {
         return {
-            usersApi: new UsersAPI()
+            msGraphApi: new MSGraphAPI()
         }
     },
     context: (req) => {
+        console.log(`Auth Token: ${req.event.headers.authorization}`)
         return {
             token: req.event.headers.authorization
         };
