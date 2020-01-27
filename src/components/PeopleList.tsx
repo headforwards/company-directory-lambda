@@ -3,6 +3,7 @@ import DownloadButton from './DownloadButton'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks';
 import Person from './Person'
+import isActualPerson from '../functions/users/filterUsers'
 
 const PeopleList: React.SFC = () => {
 
@@ -29,7 +30,7 @@ const PeopleList: React.SFC = () => {
     console.log(data)
 
     const actualPeople = data.users.filter((user: any) => {
-        return user.givenName !== null && user.surname !== null
+        return isActualPerson(user)
     })
 
     return (
