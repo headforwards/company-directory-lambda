@@ -1,4 +1,5 @@
 import { groupUsersByDept, getDeptsFromUsers, getUsersForDept } from '../users/groupUsersByDept'
+import userType from './usertype'
 
 test('returns an array', () => {
     expect(Array.isArray(groupUsersByDept(soleUser))).toBe(true)
@@ -22,15 +23,23 @@ test('Gets a list of users in a department', () => {
 test('Gets the right users for a dept', () => {
     expect(getUsersForDept(`Department 01`, manyUsersAcrossDepts)).toEqual([
         {
+            id: '1',
+            displayName: 'Jeff Bob',
             givenName: 'Jeff',
             surname: 'Bob',
-            department: 'Department 01'
+            department: 'Department 01',
+            userType: 'Member',
+            accountEnabled: true
         },
         {
+            id: '4',
+            displayName: 'Jeffrey Bobbery',
             givenName: 'Jeffrey',
             surname: 'Bobbery',
-            department: 'Department 01'
-        }
+            department: 'Department 01',
+            userType: 'Member',
+            accountEnabled: true
+        },
     ])
 })
 
@@ -41,29 +50,45 @@ test('groups all users by department', () => {
                 departmentName: 'Department 01',
                 users: [
                     {
+                        id: '1',
+                        displayName: 'Jeff Bob',
                         givenName: 'Jeff',
                         surname: 'Bob',
-                        department: 'Department 01'
+                        department: 'Department 01',
+                        userType: 'Member',
+                        accountEnabled: true
                     },
                     {
+                        id: '4',
+                        displayName: 'Jeffrey Bobbery',
                         givenName: 'Jeffrey',
                         surname: 'Bobbery',
-                        department: 'Department 01'
-                    }
+                        department: 'Department 01',
+                        userType: 'Member',
+                        accountEnabled: true
+                    },
                 ]
             },
             {
                 departmentName: 'Department 02',
                 users: [
                     {
+                        id: '2',
+                        displayName: 'Mister Flibble',
                         givenName: 'Mister',
                         surname: 'Flibble',
-                        department: 'Department 02'
+                        department: 'Department 02',
+                        userType: 'Member',
+                        accountEnabled: true
                     },
                     {
+                        id: '3',
+                        displayName: 'Captain underpants',
                         givenName: 'Captain',
                         surname: 'Underpants',
-                        department: 'Department 02'
+                        department: 'Department 02',
+                        userType: 'Member',
+                        accountEnabled: true
                     }
                 ]
             },
@@ -71,10 +96,14 @@ test('groups all users by department', () => {
                 departmentName: 'Department 05',
                 users: [
                     {
+                        id: '5',
+                        displayName: 'Jeff Bob',
                         givenName: 'Jeff',
                         surname: 'Bob',
-                        department: 'Department 05'
-                    }
+                        department: 'Department 05',
+                        userType: 'Member',
+                        accountEnabled: true
+                    },
                 ]
             }
         ]
@@ -83,40 +112,64 @@ test('groups all users by department', () => {
 
 // ******* Data ********
 
-const soleUser: any =
+const soleUser: userType[] =
     [
         {
+            id: '1',
             givenName: 'Jeff',
             surname: 'Bob',
-            department: 'Department 01'
+            displayName: 'Jeff Bob',
+            department: 'Department 01',
+            userType: 'Member',
+            accountEnabled: true
         }
     ]
 
-const manyUsersAcrossDepts: any =
+const manyUsersAcrossDepts: userType[] =
     [
         {
+            id: '1',
+            displayName: 'Jeff Bob',
             givenName: 'Jeff',
             surname: 'Bob',
-            department: 'Department 01'
+            department: 'Department 01',
+            userType: 'Member',
+            accountEnabled: true
         },
         {
+            id: '2',
+            displayName: 'Mister Flibble',
             givenName: 'Mister',
             surname: 'Flibble',
-            department: 'Department 02'
+            department: 'Department 02',
+            userType: 'Member',
+            accountEnabled: true
         },
         {
+            id: '3',
+            displayName: 'Captain underpants',
             givenName: 'Captain',
             surname: 'Underpants',
-            department: 'Department 02'
+            department: 'Department 02',
+            userType: 'Member',
+            accountEnabled: true
         },
         {
+            id: '4',
+            displayName: 'Jeffrey Bobbery',
             givenName: 'Jeffrey',
             surname: 'Bobbery',
-            department: 'Department 01'
+            department: 'Department 01',
+            userType: 'Member',
+            accountEnabled: true
         },
         {
+            id: '5',
+            displayName: 'Jeff Bob',
             givenName: 'Jeff',
             surname: 'Bob',
-            department: 'Department 05'
+            department: 'Department 05',
+            userType: 'Member',
+            accountEnabled: true
         },
     ]

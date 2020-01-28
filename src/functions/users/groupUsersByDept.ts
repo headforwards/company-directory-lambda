@@ -1,7 +1,10 @@
-const groupUsersByDept = (userArray: any[]) => {
-    const departmentNames: any[] = getDeptsFromUsers(userArray)
+import userType from './usertype'
+import departmentType from './departmentType'
 
-    let usersByDepts: any[] = []
+const groupUsersByDept = (userArray: userType[]): departmentType[] => {
+    const departmentNames: string[] = getDeptsFromUsers(userArray)
+
+    let usersByDepts: departmentType[] = []
     
     departmentNames.forEach(name => {
         usersByDepts.push({
@@ -9,11 +12,10 @@ const groupUsersByDept = (userArray: any[]) => {
             users : getUsersForDept(name, userArray)
         })
     })
-
     return usersByDepts
 }
 
-const getDeptsFromUsers = (users: any[]) => {
+const getDeptsFromUsers = (users: userType[]): string[]=> {
     let depts: string[] = []
     users.forEach(user => {
         if ( depts.indexOf(user.department) === -1 ) {
@@ -23,7 +25,7 @@ const getDeptsFromUsers = (users: any[]) => {
     return depts
 }
 
-const getUsersForDept = (dept: string, users: any[]) => {
+const getUsersForDept = (dept: string, users: userType[]): userType[] => {
     return users.filter(user => {
         return user.department === dept
     })
