@@ -1,14 +1,16 @@
 const groupUsersByDept = (userArray: any[]) => {
-    let departments: any[] = []
-    userArray.forEach(user => {
-        departments.push(
-            { 
-                departmentName: user.department,
-                users: user
-            }
-            )
+    const departmentNames: any[] = getDeptsFromUsers(userArray)
+
+    let usersByDepts: any[] = []
+    
+    departmentNames.forEach(name => {
+        usersByDepts.push({
+            departmentName: name,
+            users : getUsersForDept(name, userArray)
+        })
     })
-    return departments
+
+    return usersByDepts
 }
 
 const getDeptsFromUsers = (users: any[]) => {

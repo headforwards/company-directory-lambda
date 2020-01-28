@@ -7,8 +7,8 @@ test('returns an array', () => {
 test('generates a list of departments', () => {
     expect(getDeptsFromUsers(manyUsersAcrossDepts)).toEqual(
         ["Department 01",
-        "Department 02",
-        "Department 05"]
+            "Department 02",
+            "Department 05"]
     )
 })
 
@@ -32,6 +32,53 @@ test('Gets the right users for a dept', () => {
             department: 'Department 01'
         }
     ])
+})
+
+test('groups all users by department', () => {
+    expect(groupUsersByDept(manyUsersAcrossDepts)).toEqual(
+        [
+            {
+                departmentName: 'Department 01',
+                users: [
+                    {
+                        givenName: 'Jeff',
+                        surname: 'Bob',
+                        department: 'Department 01'
+                    },
+                    {
+                        givenName: 'Jeffrey',
+                        surname: 'Bobbery',
+                        department: 'Department 01'
+                    }
+                ]
+            },
+            {
+                departmentName: 'Department 02',
+                users: [
+                    {
+                        givenName: 'Mister',
+                        surname: 'Flibble',
+                        department: 'Department 02'
+                    },
+                    {
+                        givenName: 'Captain',
+                        surname: 'Underpants',
+                        department: 'Department 02'
+                    }
+                ]
+            },
+            {
+                departmentName: 'Department 05',
+                users: [
+                    {
+                        givenName: 'Jeff',
+                        surname: 'Bob',
+                        department: 'Department 05'
+                    }
+                ]
+            }
+        ]
+    )
 })
 
 // ******* Data ********
