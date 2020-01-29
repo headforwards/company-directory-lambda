@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import TokenContext from '../utils/TokenContext'
 import { getPhotoForUser } from '../utils/MSGraphService'
+import AvatarIcon from './AvatarIcon'
 
 interface AvatarProps {
     userId: string | undefined
@@ -26,15 +27,8 @@ const Avatar: React.SFC<AvatarProps> = ({ userId, displayName }) => {
         getAvatar()
     }, [userId, token, displayName])
 
-    if (imageUrl) {
-        return (
-            <>
-                <img className="db w-100" src={imageUrl} title={displayName} alt={`Photo of ${displayName}`} />
-            </>
-
-        )
-    } else return (
-        <img className="db w-100" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" title={`What does ${displayName} look like?`} alt={`No-one knows what ${displayName} looks like!`} />
+    return(
+        <AvatarIcon imageUrl={imageUrl} displayName={displayName} />
     )
 
 }

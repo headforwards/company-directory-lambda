@@ -1,51 +1,22 @@
-import React, { useState } from 'react'
-import DownloadButton from './DownloadButton'
-import { gql } from 'apollo-boost'
-import { useQuery } from '@apollo/react-hooks';
+import React from 'react'
 import Person from './Person'
-import isActualPerson from '../functions/users/filterUsers'
-import sortUsersByDepartment from '../functions/users/sortUsersByDepartment'
+import userType from '../functions/users/usertype'
 
-const PeopleList: React.SFC = () => {
+interface PeopleListProps {
+    people: userType[]
+}
 
-    const PEOPLE_DATA = gql`
-    {
-        users {
-            id
-            displayName
-            givenName
-            surname
-            accountEnabled
-            userType
-            department
-        }
-    }
-    `
-
-    const { loading, error, data } = useQuery(PEOPLE_DATA);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :(</p>;
-
-    console.log("data:")
-    console.log(data)
-
-    const actualPeople = data.users.filter((user: any) => {
-        return isActualPerson(user)
-    })
-
-    const sortedPeople = sortUsersByDepartment(actualPeople)
+const PeopleList: React.SFC<PeopleListProps> = ({ people }) => {
 
     return (
-        <>
-        <DownloadButton data={sortedPeople} />
-        {
-            actualPeople.map(({ id, displayName, department }: { id: string, displayName: string, surName: string, department: string }) => (
-                <Person id={id} displayName={displayName} department={department}/>
-            )
-            )
-        }
-        </>
+        <div>
+            {
+                people.map(person => (
+                    <Person key={person.id} id={person.id} displayName={person.displayName} department={person.department} />
+
+                ))
+            }
+        </div>
     )
 
 }

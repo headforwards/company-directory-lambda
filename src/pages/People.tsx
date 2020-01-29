@@ -1,5 +1,5 @@
 import React from 'react';
-import PeopleList from '../components/PeopleList';
+import Departments from '../components/Departments';
 
 const People: React.SFC = () => {
 
@@ -7,7 +7,7 @@ const People: React.SFC = () => {
         <article>
             <h1 className="f3 fw4 pa3 mv0">People</h1>
             <div className="cf pa2">
-                <PeopleList />
+                <Departments />
             </div>
         </article>
     );
