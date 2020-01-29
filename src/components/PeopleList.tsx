@@ -9,7 +9,7 @@ interface PeopleListProps {
 const PeopleList: React.SFC<PeopleListProps> = ({ people }) => {
 
     return (
-        <div>
+        <div className="flex flex-wrap">
             {
                 people.map(person => (
                     <Person key={person.id} id={person.id} displayName={person.displayName} department={person.department} />

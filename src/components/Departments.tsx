@@ -25,7 +25,7 @@ const Departments: React.SFC = () => {
         }
     }
     `
-    
+
     const { loading, error, data } = useQuery(PEOPLE_DATA);
 
     if (loading) return <p>Loading...</p>;
@@ -46,8 +46,14 @@ const Departments: React.SFC = () => {
             <DownloadButton data={sortedPeople} />
             {
                 groupedUsers.map(({ departmentName, users }: { departmentName: string, users: userType[] }) => (
-                    <div>
+                    <div className="db w100 mv2">
                         <h2>{departmentName}</h2>
+                        {/* <div className="w5 h5 bg-gold dib">Some big Div</div>
+                        <div className="w5 h5 bg-gold dib">Some big Div</div>
+                        <div className="w5 h5 bg-gold dib">Some big Div</div>
+                        <div className="w5 h5 bg-gold dib">Some big Div</div>
+                        <div className="w5 h5 bg-gold dib">Some big Div</div> */}
+                        
                         <PeopleList people={users} key={departmentName} />
                     </div>
                 )

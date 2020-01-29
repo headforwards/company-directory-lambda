@@ -18,6 +18,7 @@ const groupUsersByDept = (userArray: userType[]): departmentType[] => {
 const getDeptsFromUsers = (users: userType[]): string[]=> {
     let depts: string[] = []
     users.forEach(user => {
+        if (!user.department) { user.department = "Un-named Department"}
         if ( depts.indexOf(user.department) === -1 ) {
             depts.push(user.department)
         }
