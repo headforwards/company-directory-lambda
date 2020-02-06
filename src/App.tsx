@@ -16,7 +16,8 @@ const App: React.SFC = () => {
 
   const userAgentApplication = new UserAgentApplication({
     auth: {
-      clientId: config.appId
+      clientId: config.appId,
+      postLogoutRedirectUri: "https://www.headforwards.com"
     },
     cache: {
       cacheLocation: "localStorage",
@@ -59,7 +60,6 @@ const App: React.SFC = () => {
   const [user, setUser] = useState({})
   const [error, setError] = useState<ErrorMessageProps | null>(null)
   const [graphToken, setGraphToken] = useState<AuthResponse>()
-  // const [apolloClient, setApolloClient] = useState<ApolloClient<any>>(apolloClientAuth)
 
   let errorMessage = null;
   if (error) {
