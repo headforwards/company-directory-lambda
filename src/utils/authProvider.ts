@@ -1,3 +1,4 @@
+// export default ''
 import { MsalAuthProvider, LoginType } from 'react-aad-msal'
 import config from '../Config'
 

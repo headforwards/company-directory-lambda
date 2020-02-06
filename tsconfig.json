@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -12,9 +17,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "lib": ["es6", "dom"],
     "jsx": "preserve"
   },
-  "exclude": ["src/setupProxy.js", "src/lambda"],
-  "include": ["src"]
+  "exclude": [
+    "src/setupProxy.js",
+    "src/lambda"
+  ],
+  "include": [
+    "src"
+  ]
 }
