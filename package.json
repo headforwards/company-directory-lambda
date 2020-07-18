@@ -28,7 +28,7 @@
     "encoding": "^0.1.12",
     "graphql": "^14.5.8",
     "jsonexport": "^2.4.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "msal": "^1.2.1",
     "node-fetch": "^2.3.0",
